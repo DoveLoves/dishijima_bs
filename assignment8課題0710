@@ -1,0 +1,153 @@
+{
+ "cells": [
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 課題0710\n",
+    "\n",
+    "そのまま課題ファイルで編集しないでください。課題ファイルを複製してから課題を回答してください。"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import matplotlib.pyplot as plt\n",
+    "import scienceplots\n",
+    "plt.style.use(['science', 'no-latex'])\n",
+    "from matplotlib import font_manager\n",
+    "\n",
+    "# 日本語フォントの設定\n",
+    "plt.rcParams['font.family'] = 'Hiragino Sans'\n",
+    "\n",
+    "# データの読み込み\n",
+    "df = pd.read_csv(\"https://raw.githubusercontent.com/lvzeyu/css_tohoku/master/css_tohoku/draft/Data/titanic.csv\")"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 課題1\n",
+    "\n",
+    "以下の図を再現してください\n",
+    "\n",
+    "- 年齢の分布を、異なる階級幅を使って、4つのサブプロットをわけて描画する\n",
+    "   - 階級幅を適当で決めてよい\n",
+    "- 各サブプロットには、\n",
+    "    - x軸ラベル、y軸ラベル、サブプロット番号(a-d)を指定する\n",
+    "    - 水平方向のグリッド線を追加する\n",
+    "    - ヒストグラムの色を`lightblue`に変更する"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": (以下略)
+
+      "text/plain": [
+       "<Figure size 1200x600 with 4 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "fig, axs = plt.subplots(2, 2, figsize=(12, 6))\n",
+    "bin_settings = [50, 30, 15, 10]\n",
+    "titles = ['a', 'b', 'c', 'd']\n",
+    "\n",
+    "for i, ax in enumerate(axs.flat):\n",
+    "    ax.hist(df['age'].dropna(), bins=bin_settings[i], rwidth=0.8, color='lightblue')\n",
+    "    ax.set_xlabel('年齢(歳)', fontsize=14)\n",
+    "    ax.set_ylabel('人数', fontsize=14)\n",
+    "    ax.set_title(titles[i], fontsize=14, loc='left')\n",
+    "    ax.grid(axis='y')\n",
+    "\n",
+    "plt.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 課題2\n",
+    "\n",
+    "以下の図を再現してください\n",
+    "\n",
+    "- 男性乗客と女性乗客の年齢の分布をそれぞれ描画する\n",
+    "- 全乗客の年齢分布を示す灰色ヒストグラムも描画する\n",
+    "- 図のタイトル、x軸ラベル、y軸ラベル、凡例を設定する"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": (以下略)
+
+      "text/plain": [
+       "<Figure size 1200x400 with 2 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "fig, axs = plt.subplots(1, 2, figsize=(12, 4))\n",
+    "age_range = (0, 80)\n",
+    "\n",
+    "for i, (gender, color, title) in enumerate(zip(['male', 'female'], ['blue', 'red'], ['男性乗客', '女性乗客'])):\n",
+    "    axs[i].hist(df['age'].dropna(), bins=50, color='gray', range=age_range, label='すべての乗客')\n",
+    "    axs[i].hist(df[df['sex'] == gender]['age'].dropna(), bins=50, color=color, alpha=0.8, range=age_range, label=f'{title}')\n",
+    "    axs[i].set_xlabel('乗客の年齢(歳)')\n",
+    "    axs[i].set_ylabel('人数')\n",
+    "    axs[i].set_title(f'{title}')\n",
+    "    axs[i].legend()\n",
+    "    axs[i].grid(axis='y')\n",
+    "\n",
+    "plt.tight_layout()\n",
+    "plt.show()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.1"
+  },
+  "orig_nbformat": 4
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
